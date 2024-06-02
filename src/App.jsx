@@ -1,31 +1,43 @@
 import LeftSideBar from "./components/left-sidebar";
-import { useState  } from "react";
-
-
-let notes = []
+import RightSideBar from "./components/right-sidebar";
+import { useState } from "react";
 
 function App() {
-    const [ noteTitle,setNoteTitle] = useState({'title': ''});
-    const [ isUsed,setIsUsed ] = useState(true)
-    function handleNew(){
-      setIsUsed(x => !x)
+    const [numberOfNotesArr, setNumberOfNotesArr] = useState([]);
+    const [tooMany, setTooMany] = useState(false);
+    const [activeNote, setActiveNote] = useState(false);
+
+    function handleNewNote() {
+        setActiveNote(true);
     }
 
-    function handleTitle(e){
-      setNoteTitle({'title': e.target.value})
-      notes.push(noteTitle)
-      console.log(notes)
+    function addNote(data) {
+        setNumberOfNotesArr(prevNotes => [...prevNotes, data]);
+        setActiveNote(false); 
+        console.log(numberOfNotesArr)
     }
 
-  return <div className="flex">
-      <LeftSideBar 
-      onClick={handleNew}
-      active={isUsed}
-      onChange={handleTitle}/>
-    </div>
-  
+    function onClickArray() {
+
+    }
+
+    return (
+        <div className="flex">
+            <LeftSideBar
+                onClick={handleNewNote}
+                array={numberOfNotesArr}
+                tooManyNotes={tooMany}
+                onClickArray={onClickArray}
+            />
+
+            <RightSideBar
+                note={numberOfNotesArr}
+                activeNote={activeNote}
+                setActiveNote={setActiveNote}
+                onAddNote={addNote}
+            />
+        </div>
+    );
 }
 
 export default App;
-
-
